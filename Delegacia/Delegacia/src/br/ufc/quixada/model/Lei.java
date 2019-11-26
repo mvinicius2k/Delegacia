@@ -25,5 +25,11 @@ public class Lei {
 		this.descricao = descricao;
 	}
 	
-	
+	@Override
+    public String toString() {
+        return "LEI\n" +
+                "Nº da Lei >> " + this.id + "\n" +
+                "Descricao >> " + this.descricao + "\n";
+    }
+    
 }

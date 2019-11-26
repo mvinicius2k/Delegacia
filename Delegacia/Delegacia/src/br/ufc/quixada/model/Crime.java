@@ -10,7 +10,7 @@ import java.util.TreeMap;
 import br.ufc.quixada.db.Conexao;
 
 public class Crime {
-	private int id, vitimaid, cirminososid, julgamentoid, armaid;
+	private int id, vitimaid, cirminososid, leiid, armaid;
 	private String descricao;
 	private LocalDateTime dataOcorrencia, dataComunicacao;
 	private boolean fragrante, consumado;
@@ -18,11 +18,27 @@ public class Crime {
 	private List<Vitima> vitimas;
 	private List<Criminoso> criminosos;
 	private List<Arma> armas;
-	private List<Lei> julgamento;
+	private List<Lei> leis;
 
-	
-	
-	
+	public Crime(int id, int vitimaid, int cirminososid, int leiid, int armaid, String descricao,
+			LocalDateTime dataOcorrencia, LocalDateTime dataComunicacao, boolean fragrante, boolean consumado,
+			Endereco local) {
+		this.id = id;
+		this.vitimaid = vitimaid;
+		this.cirminososid = cirminososid;
+		this.leiid = leiid;
+		this.armaid = armaid;
+		this.descricao = descricao;
+		this.dataOcorrencia = dataOcorrencia;
+		this.dataComunicacao = dataComunicacao;
+		this.fragrante = fragrante;
+		this.consumado = consumado;
+		this.local = local;
+		this.vitimas = new ArrayList<>();
+		this.criminosos = new ArrayList<>();
+		this.armas = new ArrayList<>();
+		this.leis = new ArrayList<>();
+	}
 	
 	
 	public Crime() {
@@ -30,7 +46,7 @@ public class Crime {
 		this.vitimas = new ArrayList<>();
 		this.criminosos = new ArrayList<>();
 		this.armas = new ArrayList<>();
-		this.julgamento = new ArrayList();
+		this.leis = new ArrayList<>();
 		
 	}
 	
@@ -130,20 +146,20 @@ public class Crime {
 		this.cirminososid = cirminososid;
 	}
 
-	public int getJulgamentoid() {
-		return julgamentoid;
+	public int getLeiId() {
+		return leiid;
 	}
 
 	public void setJulgamentoid(int julgamentoid) {
-		this.julgamentoid = julgamentoid;
+		this.leiid = julgamentoid;
 	}
 
-	public List<Lei> getJulgamento() {
-		return julgamento;
+	public List<Lei> getLeis() {
+		return leis;
 	}
 
-	public void setJulgamento(List<Lei> julgamento) {
-		this.julgamento = julgamento;
+	public void setJulgamento(List<Lei> leis) {
+		this.leis = leis;
 	}
 
 	public int getArmaid() {
@@ -152,6 +168,22 @@ public class Crime {
 
 	public void setArmaid(int armaid) {
 		this.armaid = armaid;
+	}
+	@Override
+    public String toString() {
+		return 	"CRIME:\n" +
+				"COD. >> " + this.id+ "\n" +
+				"Data do Ocorrido >> " + this.dataOcorrencia.toString() + "\n" +
+				"Data do Relato >> " + this.dataComunicacao.toString() + "\n" +
+				"Fragrante? >> " + this.fragrante  + "\n" +
+				"Consumado? >> " + this.consumado  + "\n";
+				"End. >> " + this.local.toString()  + "\n" + 
+				"Vitima >> " + this.vitimas.toString()  + "\n";
+				"Suspeito/Investigado >> " + this.criminosos.toString()  + "\n"+ 
+				"Arma >> " + this.armas.toString()  + "\n" +
+				"Lei >> " + this.leis.toString()  + "\n" +
+				"Descricao >> " + this.descricao  + "\n";
+
 	}
 	
 	

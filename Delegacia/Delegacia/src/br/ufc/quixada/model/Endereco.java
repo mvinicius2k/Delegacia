@@ -67,5 +67,15 @@ public class Endereco {
 		this.complemento = complemento;
 	}
 	
-	
+	@Override
+    public String toString() {
+        return 	"END.:\n" +
+				"Rua >> " + this.rua + "\n" +
+				"Nº >> " + this.numero + "\n" +
+				"Bairro >> " + this.bairro + "\n" +
+				"Cidade >> " + this.cidade  + "\n" + 
+				"Estado >> " + this.estado  + "\n" +
+				"Complemento >> " + this.complemento  + "\n";
+	}
+
 }
