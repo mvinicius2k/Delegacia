@@ -22,6 +22,18 @@ public class Vitima extends Pessoa {
 	public void setEstadoCorpo(String estadoCorpo) {
 		this.estadoCorpo = estadoCorpo;
 	}
+	
+	
+
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 
 	@Override
     public String toString() {
