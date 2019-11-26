@@ -2,14 +2,16 @@ package br.ufc.quixada.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Conexao {
-	private Connection con = null;
+	public  Connection con = null;
 	public Statement stt;
-	public ResultSet result;
+	public PreparedStatement ptt;
+	
 	private String endereco, usuario, senha;
 	
 	
@@ -41,6 +43,7 @@ public class Conexao {
 			Class.forName("org.postgresql.Driver");
 			this.con = DriverManager.getConnection(this.endereco, this.usuario, this.senha);
 			stt = con.createStatement();
+			
 			return true;
 			
 		} catch (ClassNotFoundException e) {
@@ -74,9 +77,11 @@ public class Conexao {
 		}
 	}
 	
-	public int inserir(String sql) throws SQLException {
-		return stt.executeUpdate(sql);
+	public PreparedStatement preInserir(String sql) throws SQLException {
+		return con.prepareStatement(sql);
 	}
+	
+	
 		
 	public ResultSet consultar(String sql) throws SQLException {
 		return stt.executeQuery(sql);

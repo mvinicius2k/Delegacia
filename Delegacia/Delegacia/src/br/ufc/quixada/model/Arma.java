@@ -1,6 +1,7 @@
 package br.ufc.quixada.model;
 
 public class Arma {
+	private int id;
     private String nome;
     private String descricao;
     
@@ -26,8 +27,18 @@ public class Arma {
     public void setDescricao(String descricao){
         this.descricao = descricao;
     }
+    
+    
 
-    @Override
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	@Override
     public String toString() {
         return "ARMA DO CRIME\n" +
                 "Nome da Arma >> " + this.nome + "\n" +
