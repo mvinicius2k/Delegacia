@@ -10,7 +10,7 @@ import java.util.TreeMap;
 import br.ufc.quixada.db.Conexao;
 
 public class Crime {
-	private int id;
+	private int id, vitimaid, cirminososid, julgamentoid, armaid;
 	private String descricao;
 	private LocalDateTime dataOcorrencia, dataComunicacao;
 	private boolean fragrante, consumado;
@@ -18,7 +18,8 @@ public class Crime {
 	private List<Vitima> vitimas;
 	private List<Criminoso> criminosos;
 	private List<Arma> armas;
-	private TreeMap<Integer, Lei> julgamento;
+	private List<Lei> julgamento;
+
 	
 	
 	
@@ -29,10 +30,10 @@ public class Crime {
 		this.vitimas = new ArrayList<>();
 		this.criminosos = new ArrayList<>();
 		this.armas = new ArrayList<>();
-		this.julgamento = new TreeMap<Integer, Lei>();
+		this.julgamento = new ArrayList();
 		
 	}
-
+	
 	public int getId() {
 		return id;
 	}
@@ -113,43 +114,44 @@ public class Crime {
 		this.armas = armas;
 	}
 
-	public TreeMap<Integer, Lei> getJulgamento() {
+	public int getVitimaid() {
+		return vitimaid;
+	}
+
+	public void setVitimaid(int vitimaid) {
+		this.vitimaid = vitimaid;
+	}
+
+	public int getCirminososid() {
+		return cirminososid;
+	}
+
+	public void setCirminososid(int cirminososid) {
+		this.cirminososid = cirminososid;
+	}
+
+	public int getJulgamentoid() {
+		return julgamentoid;
+	}
+
+	public void setJulgamentoid(int julgamentoid) {
+		this.julgamentoid = julgamentoid;
+	}
+
+	public List<Lei> getJulgamento() {
 		return julgamento;
 	}
 
-	public void setJulgamento(TreeMap<Integer, Lei> julgamento) {
+	public void setJulgamento(List<Lei> julgamento) {
 		this.julgamento = julgamento;
 	}
 
-	
+	public int getArmaid() {
+		return armaid;
+	}
 
-	public ArrayList<Crime> buscar(String chave){
-		try {
-			ArrayList<Crime> resultados = new ArrayList<Crime>();
-			Conexao con = new Conexao();
-			con.conectar();
-			ResultSet result;
-			
-			result = con.consultar("select * from Crime join (select id from crimesBusca where like '%" + chave.toLowerCase() + "%') b on Crime.id = b.id");
-			
-			
-			while(result.next()) {
-				Crime c = new Crime();
-				c.id = result.getInt("id");
-				c.descricao = result.getString("descricao");
-				//...
-				c.
-				
-			}
-			
-			
-			
-			con.desconectar();
-			return resultados;
-		} catch (Exception e) {
-			return null;
-		}
-		
+	public void setArmaid(int armaid) {
+		this.armaid = armaid;
 	}
 	
 	
