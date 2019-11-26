@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS Pessoa
 (codPessoa serial not null,
  nomePessoa varchar (80) not null,
  cpf varchar (14),
+ sexo varchar (1),
  dataNasc date,
  contato integer, 
  idEndereco integer not null,
