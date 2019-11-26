@@ -5,11 +5,13 @@ import java.time.LocalDate;
 public class Vitima extends Pessoa {
 
 	private String estadoCorpo;
+	private int id;
 
 	public Vitima(int id, String nome, String cpf, LocalDate dataNasc, Endereco endereco, char sexo,
-			String estadoCorpo) {
+			String estadoCorpo, int id2) {
 		super(id, nome, cpf, dataNasc, endereco, sexo);
 		this.estadoCorpo = estadoCorpo;
+		this.id = id2;
 	}
 	
 

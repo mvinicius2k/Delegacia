@@ -71,7 +71,7 @@ public class Endereco {
     public String toString() {
         return 	"END.:\n" +
 				"Rua >> " + this.rua + "\n" +
-				"NÂº >> " + this.numero + "\n" +
+				"Número >> " + this.numero + "\n" +
 				"Bairro >> " + this.bairro + "\n" +
 				"Cidade >> " + this.cidade  + "\n" + 
 				"Estado >> " + this.estado  + "\n" +

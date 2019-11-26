@@ -4,11 +4,13 @@ import java.time.LocalDate;
 
 public class Criminoso extends Pessoa {
 	private String escolaridade;
+	private int id; 
 
 	public Criminoso(int id, String nome, String cpf, LocalDate dataNasc, Endereco endereco, char sexo,
-			String escolaridade) {
+			String escolaridade, int id2) {
 		super(id, nome, cpf, dataNasc, endereco, sexo);
 		this.escolaridade = escolaridade;
+		this.id = id2;
 	}
 
 	public Criminoso(){}
@@ -19,6 +21,14 @@ public class Criminoso extends Pessoa {
 
 	public void setEscolaridade(String escolaridade) {
 		this.escolaridade = escolaridade;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	@Override
