@@ -153,7 +153,7 @@ public class CrimeDAO {
 	
 	@Deprecated
 	public static ArrayList<Criminoso> getCriminososDB(int idCrime){
-		String sql = "select * Pessoa from pessoa join (select * from Criminoso join (select idCriminoso from CrimeCriminoso where idCrime = " + idCrime + ") c on c.idCriminoso = Criminoso.id) on cc.idPessoa = Pessoa.id";
+		String sql = "select * from Pessoa join (select * from Criminoso join (select idCriminoso from CrimeCriminoso where idCrime = " + idCrime + ")  c on c.idCriminoso = Criminoso.codCriminoso) cc on cc.idPessoa = Pessoa.codPessoa";
 		List<Criminoso> lista = new ArrayList<>();
 		Conexao con = new Conexao();
 		con.conectar();
@@ -162,7 +162,16 @@ public class CrimeDAO {
 			result = con.consultar(sql);
 			
 			while(result.next()) {
+				Criminoso c = new Criminoso();
+				c.setIdPessoa(result.getInt("codPessoa"));
+				c.setNome(result.getString("nomePessoa"));
+				c.setCpf(result.getString("cpf"));
+				c.setSexo(result.getString("sexo").toCharArray()[0]);
+				c.setDataNasc(result.getDate("dataNasc").toLocalDate());
+				c.setEndereco(getEnderecoDB(result.getInt("idEndereco")));
 				
+				c.setId(result.getInt("codCriminoso"));
+				c.setEscolaridade(result.getString("escolaridade"));
 			}
 		} catch (SQLException e) {
 			
@@ -193,6 +202,7 @@ public class CrimeDAO {
 		return null;
 	}
 	
+
 	private static ArrayList<Crime> resultSetToCrime(ResultSet result) throws SQLException {
 		ArrayList<Crime> resultados = new ArrayList<Crime>();
 		
