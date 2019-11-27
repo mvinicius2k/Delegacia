@@ -1,5 +1,6 @@
 package br.ufc.quixada.dao;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import br.ufc.quixada.model.Criminoso;
@@ -15,6 +16,21 @@ public class CriminosoDAO {
 	
 	@Deprecated
 	public static ArrayList<Criminoso> buscar(String chave){
+		return null;
+	}
+	
+	@Deprecated
+	public static ArrayList<Criminoso> buscarNome(String nome){
+		return null;
+	}
+	
+	@Deprecated
+	public static ArrayList<Criminoso> buscarCpf(String nome){
+		return null;
+	}
+	
+	@Deprecated
+	public static ArrayList<Criminoso> buscarNome(LocalDate date){
 		return null;
 	}
 	

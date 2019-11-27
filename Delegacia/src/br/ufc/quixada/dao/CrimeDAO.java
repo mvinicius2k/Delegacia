@@ -5,13 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
-
 import br.ufc.quixada.db.Conexao;
 import br.ufc.quixada.model.Arma;
 import br.ufc.quixada.model.Crime;
 import br.ufc.quixada.model.Criminoso;
-import br.ufc.quixada.model.Endereco;
 import br.ufc.quixada.model.Lei;
 import br.ufc.quixada.model.Vitima;
 
@@ -79,7 +76,7 @@ public class CrimeDAO {
 				ptt.setInt(2, idCrime);
 				ptt.executeUpdate();
 			}
-			
+			con.desconectar();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,7 +91,7 @@ public class CrimeDAO {
 			ResultSet result = con.consultar("select * from Crime where id = " + id + " limit 1");
 			
 			ArrayList<Crime> resultado = resultSetToCrime(result);
-			
+			con.desconectar();
 			return resultado.get(0);
 			
 			
@@ -109,6 +106,8 @@ public class CrimeDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		} finally {
+			
 		}
 	}
 	
@@ -121,7 +120,7 @@ public class CrimeDAO {
 			
 			con.conectar();
 				
-			result = con.consultar("select * from Crime join (select id from crimesBusca where like '%" + chave.toLowerCase() + "%') b on Crime.id = b.id");
+			result = con.consultar("select * from Crime join (select id from crimesBusca where result like '%" + chave.toLowerCase() + "%') b on Crime.id = b.id");
 				
 			ArrayList<Crime> resultado = resultSetToCrime(result);
 			
@@ -135,6 +134,11 @@ public class CrimeDAO {
 			return null;
 		}
 }
+	
+	@Deprecated
+	public static ArrayList<Crime> buscarDataOcorrencia(String date){
+		return null;
+	}
 	
 	@Deprecated
 	public static boolean editar(Crime c) {
@@ -168,7 +172,7 @@ public class CrimeDAO {
 				c.setCpf(result.getString("cpf"));
 				c.setSexo(result.getString("sexo").toCharArray()[0]);
 				c.setDataNasc(result.getDate("dataNasc").toLocalDate());
-				c.setEndereco(getEnderecoDB(result.getInt("idEndereco")));
+				c.setEndereco(EnderecoDAO.getEnderecoDB(result.getInt("idEndereco")));
 				c.setContato(getContatosDB(result.getInt("codPessoa")));
 				
 				c.setId(result.getInt("codCriminoso"));
@@ -181,7 +185,10 @@ public class CrimeDAO {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+			
 			return null;
+		} finally {
+			con.desconectar();
 		}
 		
 		return lista;
@@ -204,7 +211,7 @@ public class CrimeDAO {
 				v.setCpf(result.getString("cpf"));
 				v.setSexo(result.getString("sexo").toCharArray()[0]);
 				v.setDataNasc(result.getDate("dataNasc").toLocalDate());
-				v.setEndereco(getEnderecoDB(result.getInt("idEndereco")));
+				v.setEndereco(EnderecoDAO.getEnderecoDB(result.getInt("idEndereco")));
 				v.setContato(getContatosDB(result.getInt("codPessoa")));
 				
 				v.setId(result.getInt("codVitima"));
@@ -218,6 +225,8 @@ public class CrimeDAO {
 			
 			e.printStackTrace();
 			return null;
+		} finally {
+			con.desconectar();
 		}
 		
 		return lista;
@@ -233,15 +242,31 @@ public class CrimeDAO {
 	public static ArrayList<Lei> getLeisDB(int idCrime){
 		return null;
 	}
-	@Deprecated	
-	public static Endereco getEnderecoDB(int idPessoa) {
-		String sql = "select  "
-	}
-	@Deprecated	
+	
+	
 	public static ArrayList<String> getContatosDB(int idPessoa) {
-		return null;
+		Conexao con = new Conexao();
+		ArrayList<String> contatos = new ArrayList<String>();
+		String sql = "select * from contatos where idPessoa = " + idPessoa;
+		con.conectar();
+		try {
+			ResultSet result = con.consultar(sql);
+		
+			while(result.next()) 
+				contatos.add(result.getString("contato"));
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			con.desconectar();
+		}
+		return contatos;
 	}
 	
+		
 
 	private static ArrayList<Crime> resultSetToCrime(ResultSet result) throws SQLException {
 		ArrayList<Crime> resultados = new ArrayList<Crime>();
@@ -263,7 +288,7 @@ public class CrimeDAO {
 		
 		for(int i = 0; i < resultados.size(); i++) {
 			Crime c = resultados.get(i);
-			c.setLocal(getEnderecoDB(c.getId()));
+			c.setLocal(EnderecoDAO.getEnderecoDB(c.getId()));
 			c.setVitimas(getVitimasDB(c.getId()));
 			c.setCriminosos(getCriminososDB(c.getId()));
 			c.setArmas(getArmasDB(c.getId()));
