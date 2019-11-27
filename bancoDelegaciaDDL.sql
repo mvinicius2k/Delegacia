@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS CrimeVitima
 );
 
 -- relacionamento de crime com criminoso
-CREATE TABLE IF NOT EXISTS CrimeCrimonoso
+CREATE TABLE IF NOT EXISTS CrimeCriminoso
 (idCriminoso integer not null,
  idCrime integer not null,
 
@@ -182,3 +182,6 @@ CREATE TABLE IF NOT EXISTS CrimeArma
 
 
 
+
+
+select * from Pessoa join (select * from Criminoso join (select idCriminoso from CrimeCriminoso where idCrime = 1)  c on c.idCriminoso = Criminoso.codCriminoso) cc on cc.idPessoa = Pessoa.codPessoa;
