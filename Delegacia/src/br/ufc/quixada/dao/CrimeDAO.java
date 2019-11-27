@@ -1,5 +1,6 @@
 package br.ufc.quixada.dao;
 
+import java.lang.annotation.Documented;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,10 +18,10 @@ import br.ufc.quixada.model.Vitima;
 
 public class CrimeDAO {
 	
-	Crime c;
+	//private Crime c;
 	
 	
-	public boolean cadastrar(Crime c) {
+	public static boolean cadastrar(Crime c) {
 		try {
 			
 		
@@ -87,7 +88,7 @@ public class CrimeDAO {
 		}
 	}
 	
-	public Crime buscar(int id) {
+	public static Crime buscar(int id) {
 		try{
 			Conexao con = new Conexao();
 			
@@ -99,7 +100,7 @@ public class CrimeDAO {
 			
 			
 		} catch (IndexOutOfBoundsException e) {
-			System.out.print("O crime de id " + id + " n„o existe");
+			System.out.print("O crime de id " + id + " n√£o existe");
 			return null;
 			
 		} catch (SQLException e) {
@@ -112,7 +113,7 @@ public class CrimeDAO {
 		}
 	}
 	
-	public ArrayList<Crime> buscar(String chave){
+	public static ArrayList<Crime> buscar(String chave){
 		try {
 			
 			
@@ -136,48 +137,52 @@ public class CrimeDAO {
 		}
 }
 	
-	//Nao implementado
-	public boolean editar(Crime c) {
+	@Deprecated
+	public static boolean editar(Crime c) {
 			return true;
 	}
 	
+	@Deprecated
+	public static boolean remover(ArrayList<Integer> id) {
+		return false;
+	}
 	
 	
 	
 	
 	
 	
-	
-	//Nao implementado
-	public ArrayList<Criminoso> getCriminososDB(int id){
+	@Deprecated
+	public static ArrayList<Criminoso> getCriminososDB(int id){
 		return null;
 	}
 	
-	//Nao implementado
-	public ArrayList<Vitima> getVitimasDB(int id){
+	@Deprecated
+	public static ArrayList<Vitima> getVitimasDB(int id){
 		return null;
 	}
-	//Nao implementado	
-	public ArrayList<Arma> getArmasDB(int id){
+	@Deprecated	
+	public static ArrayList<Arma> getArmasDB(int id){
 		return null;
 	}
-	//Nao implementado	
-	public ArrayList<Lei> getLeisDB(int id){
+	@Deprecated
+	public static ArrayList<Lei> getLeisDB(int id){
 		return null;
 	}
-	//Nao implementado	
-	public Endereco getEnderecoDB(int id) {
+	@Deprecated	
+	public static Endereco getEnderecoDB(int id) {
 		return null;
 	}
 	
-	private ArrayList<Crime> resultSetToCrime(ResultSet result) throws SQLException {
+	private static ArrayList<Crime> resultSetToCrime(ResultSet result) throws SQLException {
 		ArrayList<Crime> resultados = new ArrayList<Crime>();
 		
 		while(result.next()) {
 			Crime c = new Crime();
 			c.setId(result.getInt("id"));
 			c.setDescricao(result.getString("descricao"));
-			//...
+			
+			
 			c.setVitimaid(result.getInt("vitimaid"));
 			c.setCriminosoid(result.getInt("criminosoid"));
 			c.setArmaid(result.getInt("armaid"));
@@ -200,5 +205,10 @@ public class CrimeDAO {
 		
 		return resultados;
 	}
+
+	
+
+	
+	
 	
 }
