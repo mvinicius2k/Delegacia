@@ -1,8 +1,6 @@
 package br.ufc.quixada.dao;
 
-import java.util.ArrayList;
 
-import br.ufc.quixada.model.Criminoso;
 import br.ufc.quixada.model.Vitima;
 
 public class Endereco {

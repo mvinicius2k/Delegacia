@@ -13,4 +13,11 @@ public class Global {
 		
 		return Timestamp.valueOf(date);
 	}
+	
+
+	public static LocalDateTime toLocalDateTime(Timestamp date) {
+		
+		return date.toLocalDateTime();
+		
+	}
 }

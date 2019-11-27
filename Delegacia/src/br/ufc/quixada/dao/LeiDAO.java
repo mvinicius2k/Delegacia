@@ -1,7 +1,7 @@
 package br.ufc.quixada.dao;
 
 import br.ufc.quixada.model.Lei;
-import br.ufc.quixada.model.Vitima;
+
 
 public class LeiDAO {
 	@Deprecated

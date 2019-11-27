@@ -1,13 +1,12 @@
 package br.ufc.quixada.dao;
 
-import java.lang.annotation.Documented;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
-import br.ufc.quixada.controller.Global;
 import br.ufc.quixada.db.Conexao;
 import br.ufc.quixada.model.Arma;
 import br.ufc.quixada.model.Crime;
@@ -153,24 +152,44 @@ public class CrimeDAO {
 	
 	
 	@Deprecated
-	public static ArrayList<Criminoso> getCriminososDB(int id){
+	public static ArrayList<Criminoso> getCriminososDB(int idCrime){
+		String sql = "select * Pessoa from pessoa join (select * from Criminoso join (select idCriminoso from CrimeCriminoso where idCrime = " + idCrime + ") c on c.idCriminoso = Criminoso.id) on cc.idPessoa = Pessoa.id";
+		List<Criminoso> lista = new ArrayList<>();
+		Conexao con = new Conexao();
+		con.conectar();
+		ResultSet result;
+		try {
+			result = con.consultar(sql);
+			
+			while(result.next()) {
+				
+			}
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			return null;
+		}
+		
+		
+		
+		
 		return null;
 	}
 	
 	@Deprecated
-	public static ArrayList<Vitima> getVitimasDB(int id){
+	public static ArrayList<Vitima> getVitimasDB(int idCrime){
 		return null;
 	}
 	@Deprecated	
-	public static ArrayList<Arma> getArmasDB(int id){
+	public static ArrayList<Arma> getArmasDB(int idCrime){
 		return null;
 	}
 	@Deprecated
-	public static ArrayList<Lei> getLeisDB(int id){
+	public static ArrayList<Lei> getLeisDB(int idCrime){
 		return null;
 	}
 	@Deprecated	
-	public static Endereco getEnderecoDB(int id) {
+	public static Endereco getEnderecoDB(int idCrime) {
 		return null;
 	}
 	
@@ -180,14 +199,13 @@ public class CrimeDAO {
 		while(result.next()) {
 			Crime c = new Crime();
 			c.setId(result.getInt("id"));
+			c.setDataOcorrencia(result.getString("dataOcorrencia"));
+			c.setDataComunicacao(result.getTimestamp("dataComunicacao").toLocalDateTime());
+			c.setFragrante(result.getBoolean("fragrante"));
+			c.setConsumado(result.getBoolean("consumado"));
 			c.setDescricao(result.getString("descricao"));
+			c.setEnderecoid(result.getInt("idEndereco"));
 			
-			
-			c.setVitimaid(result.getInt("vitimaid"));
-			c.setCriminosoid(result.getInt("criminosoid"));
-			c.setArmaid(result.getInt("armaid"));
-			c.setLeiid(result.getInt("julgamentoid"));
-			c.setEnderecoid(result.getInt("enderecoid"));
 			
 			resultados.add(c);
 			
@@ -195,11 +213,11 @@ public class CrimeDAO {
 		
 		for(int i = 0; i < resultados.size(); i++) {
 			Crime c = resultados.get(i);
-			c.setLocal(getEnderecoDB(c.getEnderecoid()));
-			c.setVitimas(getVitimasDB(c.getVitimaid()));
-			c.setCriminosos(getCriminososDB(c.getCriminosoid()));
-			c.setArmas(getArmasDB(c.getArmaid()));
-			c.setLeis(getLeisDB(c.getLeiid()));
+			c.setLocal(getEnderecoDB(c.getId()));
+			c.setVitimas(getVitimasDB(c.getId()));
+			c.setCriminosos(getCriminososDB(c.getId()));
+			c.setArmas(getArmasDB(c.getId()));
+			c.setLeis(getLeisDB(c.getId()));
 			
 		}
 		

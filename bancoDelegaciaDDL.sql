@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS Endereco
 (codEndereco serial not null,
  idRua integer not null,
  idBairro integer not null,
- idCiade integer not null,
+ idCidade integer not null,
  idUF integer not null,
  numero integer not null,
  complemento varchar (50),
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS Vitima
  CONSTRAINT pessoaFK FOREIGN KEY (idPessoa) REFERENCES Pessoa (codPessoa) -- FK	 
 );
 
--- tabela vitima 
+-- tabela Criminoso 
 CREATE TABLE IF NOT EXISTS Criminoso
 (codCriminoso serial not null,
  idPessoa integer not null,
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS Lei
 );
 
 -- tabela arma
-CREATE TABLE IF NOT EXISTS Criminoso
+CREATE TABLE IF NOT EXISTS Arma
 (codArma serial not null,
  nome varchar (50) not null,
  descricao varchar (400) not null,
@@ -172,12 +172,13 @@ CREATE TABLE IF NOT EXISTS CrimeLei
 
 -- relacionamento de crime com arma
 CREATE TABLE IF NOT EXISTS CrimeArma
-(idArma integer not null,
- idCrime integer not null,
+(idCrime integer not null,
+ idArma integer not null,
 
- CONSTRAINT crimeArmaPK PRIMARY KEY (idArma, idCrime), -- PK
+ CONSTRAINT crimeArmaPK PRIMARY KEY (idCrime, idArma), -- PK
  CONSTRAINT crimeFK FOREIGN KEY (idCrime) REFERENCES Crime (codCrime), -- FK
  CONSTRAINT armaFK FOREIGN KEY (idArma) REFERENCES Arma (codArma) -- FK
 );
+
 
 
