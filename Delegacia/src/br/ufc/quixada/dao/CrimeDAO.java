@@ -154,7 +154,7 @@ public class CrimeDAO {
 	@Deprecated
 	public static ArrayList<Criminoso> getCriminososDB(int idCrime){
 		String sql = "select * from Pessoa join (select * from Criminoso join (select idCriminoso from CrimeCriminoso where idCrime = " + idCrime + ")  c on c.idCriminoso = Criminoso.codCriminoso) cc on cc.idPessoa = Pessoa.codPessoa";
-		List<Criminoso> lista = new ArrayList<>();
+		ArrayList<Criminoso> lista = new ArrayList<>();
 		Conexao con = new Conexao();
 		con.conectar();
 		ResultSet result;
@@ -169,9 +169,14 @@ public class CrimeDAO {
 				c.setSexo(result.getString("sexo").toCharArray()[0]);
 				c.setDataNasc(result.getDate("dataNasc").toLocalDate());
 				c.setEndereco(getEnderecoDB(result.getInt("idEndereco")));
+				c.setContato(getContatosDB(result.getInt("codPessoa")));
 				
 				c.setId(result.getInt("codCriminoso"));
 				c.setEscolaridade(result.getString("escolaridade"));
+				
+				lista.add(c);
+				
+				
 			}
 		} catch (SQLException e) {
 			
@@ -179,16 +184,47 @@ public class CrimeDAO {
 			return null;
 		}
 		
-		
-		
-		
-		return null;
+		return lista;
 	}
 	
 	@Deprecated
 	public static ArrayList<Vitima> getVitimasDB(int idCrime){
-		return null;
+		String sql = "select * from Pessoa join (select * from Vitima join (select idVitima from CrimeVitima where idCrime = " + idCrime + ")  c on c.idVitima = Vitima.codVitima) cc on cc.idPessoa = Pessoa.codPessoa";
+		ArrayList<Vitima> lista = new ArrayList<>();
+		Conexao con = new Conexao();
+		con.conectar();
+		ResultSet result;
+		try {
+			result = con.consultar(sql);
+			
+			while(result.next()) {
+				Vitima v = new Vitima();
+				v.setIdPessoa(result.getInt("codPessoa"));
+				v.setNome(result.getString("nomePessoa"));
+				v.setCpf(result.getString("cpf"));
+				v.setSexo(result.getString("sexo").toCharArray()[0]);
+				v.setDataNasc(result.getDate("dataNasc").toLocalDate());
+				v.setEndereco(getEnderecoDB(result.getInt("idEndereco")));
+				v.setContato(getContatosDB(result.getInt("codPessoa")));
+				
+				v.setId(result.getInt("codVitima"));
+				v.setEstadoCorpo(result.getString("estadoCorpo"));
+				
+				lista.add(v);
+				
+				
+			}
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			return null;
+		}
+		
+		return lista;
 	}
+	
+	
+	
 	@Deprecated	
 	public static ArrayList<Arma> getArmasDB(int idCrime){
 		return null;
@@ -198,7 +234,11 @@ public class CrimeDAO {
 		return null;
 	}
 	@Deprecated	
-	public static Endereco getEnderecoDB(int idCrime) {
+	public static Endereco getEnderecoDB(int idPessoa) {
+		String sql = "select  "
+	}
+	@Deprecated	
+	public static ArrayList<String> getContatosDB(int idPessoa) {
 		return null;
 	}
 	

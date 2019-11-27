@@ -14,6 +14,15 @@ public class Vitima extends Pessoa {
 		this.id = id2;
 	}
 	
+	
+	
+
+	public Vitima() {
+		
+	}
+
+
+
 
 	public String getEstadoCorpo() {
 		return estadoCorpo;
@@ -33,6 +42,16 @@ public class Vitima extends Pessoa {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public int getIdPessoa() {
+		return super.getId();
+	}
+
+
+	public void setIdPessoa(int id) {
+		super.setId(id);
+	}
+
 
 
 	@Override

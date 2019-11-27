@@ -184,4 +184,6 @@ CREATE TABLE IF NOT EXISTS CrimeArma
 
 
 
-select * from Pessoa join (select * from Criminoso join (select idCriminoso from CrimeCriminoso where idCrime = 1)  c on c.idCriminoso = Criminoso.codCriminoso) cc on cc.idPessoa = Pessoa.codPessoa;
+--select * from Pessoa join (select * from Criminoso join (select idCriminoso from CrimeCriminoso where idCrime = 1)  c on c.idCriminoso = Criminoso.codCriminoso) cc on cc.idPessoa = Pessoa.codPessoa;
+
+--select * from Pessoa join (select * from Vitima join (select idVitima from CrimeVitima where idCrime = 1)  c on c.idVitima = Vitima.codVitima) cc on cc.idPessoa = Pessoa.codPessoa;
