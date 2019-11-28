@@ -25,6 +25,25 @@ public class Endereco {
 		
 		
 	}
+	
+	
+
+	public Endereco(String estado, String cidade, String bairro, String rua, String numero, String complemento) {
+		super();
+		this.estado = estado;
+		this.cidade = cidade;
+		this.bairro = bairro;
+		this.rua = rua;
+		this.numero = numero;
+		this.complemento = complemento;
+		this.id = -1;
+		this.estadoid = -1;
+		this.cidadeid = -1;
+		this.bairroid = -1;
+		this.ruaid = -1;
+	}
+
+
 
 	public Endereco () {
 		this.id = -1;
