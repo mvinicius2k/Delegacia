@@ -105,12 +105,12 @@ CREATE TABLE IF NOT EXISTS Criminoso
 
 -- tabela lei 
 CREATE TABLE IF NOT EXISTS Lei
-(codLei serial not null,
- idLei integer not null,
+(codLei integer not null,
+
  descricao varchar (400) not null,
 
  CONSTRAINT leiPK PRIMARY Key (codLei), -- PK
- CONSTRAINT leiUnique UNIQUE (idLei) -- Unique
+ CONSTRAINT leiUnique UNIQUE (codLei) -- Unique
 );
 
 -- tabela arma
@@ -189,3 +189,5 @@ CREATE TABLE IF NOT EXISTS CrimeArma
 --select * from Pessoa join (select * from Vitima join (select idVitima from CrimeVitima where idCrime = 1)  c on c.idVitima = Vitima.codVitima) cc on cc.idPessoa = Pessoa.codPessoa;
 
 --from select * from Endereco join (select idEndereco from Pessoa where id = 1) e on e.idEndereco = codEndereco
+
+--select * from Lei join (select idLei from CrimeLei where idCrime = 1) c on c.idLei = Lei.codLei

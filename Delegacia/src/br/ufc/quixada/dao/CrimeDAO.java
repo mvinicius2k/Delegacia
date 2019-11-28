@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
+
 import br.ufc.quixada.db.Conexao;
 import br.ufc.quixada.model.Arma;
 import br.ufc.quixada.model.Crime;
@@ -155,7 +157,7 @@ public class CrimeDAO {
 	
 	
 	
-	@Deprecated
+	
 	public static ArrayList<Criminoso> getCriminososDB(int idCrime){
 		String sql = "select * from Pessoa join (select * from Criminoso join (select idCriminoso from CrimeCriminoso where idCrime = " + idCrime + ")  c on c.idCriminoso = Criminoso.codCriminoso) cc on cc.idPessoa = Pessoa.codPessoa";
 		ArrayList<Criminoso> lista = new ArrayList<>();
@@ -194,7 +196,7 @@ public class CrimeDAO {
 		return lista;
 	}
 	
-	@Deprecated
+	
 	public static ArrayList<Vitima> getVitimasDB(int idCrime){
 		String sql = "select * from Pessoa join (select * from Vitima join (select idVitima from CrimeVitima where idCrime = " + idCrime + ")  c on c.idVitima = Vitima.codVitima) cc on cc.idPessoa = Pessoa.codPessoa";
 		ArrayList<Vitima> lista = new ArrayList<>();
@@ -234,13 +236,66 @@ public class CrimeDAO {
 	
 	
 	
-	@Deprecated	
+	
 	public static ArrayList<Arma> getArmasDB(int idCrime){
-		return null;
+		Conexao con = new Conexao();
+		ArrayList<Arma> lista = new ArrayList<>();
+		String sql = "select * from Arma join (select idArma from CrimeArma where idCrime = " + idCrime + ") d on d.idArma = Arma.codArma";
+		con.conectar();
+		
+		
+		
+		try {
+			ResultSet result = con.consultar(sql);
+			
+			while(result.next()) {
+				Arma a = new Arma();
+				
+				a.setId(result.getInt("codArma"));
+				a.setNome(result.getString("nome"));
+				a.setDescricao(result.getString("descricao"));
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			lista = null;
+		} finally {
+			con.desconectar();
+		}
+		
+		return lista;
+		
+		
 	}
-	@Deprecated
+	
 	public static ArrayList<Lei> getLeisDB(int idCrime){
-		return null;
+		String sql = "select * from Lei join (select idLei from CrimeLei where idCrime = 1) c on c.idLei = Lei.codLei";
+		Conexao con = new Conexao();
+		ArrayList<Lei> lista = new ArrayList<>();
+		
+		con.conectar();
+		
+		
+		
+		try {
+			
+			ResultSet result = con.consultar(sql);
+			
+			while(result.next()) {
+				Lei l = new Lei(result.getInt("codLei"), result.getString("descricao"));
+				lista.add(l);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			lista = null;
+		} finally {
+			
+			con.desconectar();
+			
+		}
+		return lista;
 	}
 	
 	
@@ -248,6 +303,7 @@ public class CrimeDAO {
 		Conexao con = new Conexao();
 		ArrayList<String> contatos = new ArrayList<String>();
 		String sql = "select * from contatos where idPessoa = " + idPessoa;
+		
 		con.conectar();
 		try {
 			ResultSet result = con.consultar(sql);
@@ -257,9 +313,10 @@ public class CrimeDAO {
 				
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
+			contatos = null;
 		} catch (Exception e) {
 			e.printStackTrace();
+			contatos = null;
 		} finally {
 			con.desconectar();
 		}

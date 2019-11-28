@@ -30,7 +30,7 @@ public class CriminosoDAO {
 	}
 	
 	@Deprecated
-	public static ArrayList<Criminoso> buscarNome(LocalDate date){
+	public static ArrayList<Criminoso> buscarData(LocalDate date){
 		return null;
 	}
 	

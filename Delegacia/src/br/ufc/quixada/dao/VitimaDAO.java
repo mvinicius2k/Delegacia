@@ -30,7 +30,7 @@ public class VitimaDAO {
 	}
 	
 	@Deprecated
-	public static ArrayList<Vitima> buscarNome(LocalDate date){
+	public static ArrayList<Vitima> buscarData(LocalDate date){
 		return null;
 	}
 	
