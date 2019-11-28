@@ -323,7 +323,7 @@ public class CrimeDAO {
 			
 			e.printStackTrace();
 			
-			return null;
+			lista = null;
 		} finally {
 			con.desconectar();
 		}
@@ -361,7 +361,7 @@ public class CrimeDAO {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
-			return null;
+			lista = null;
 		} finally {
 			con.desconectar();
 		}
