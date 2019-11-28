@@ -4,16 +4,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public abstract class Pessoa {
-	private int id;
+	private int id, enderecoid;
 	private String nome, cpf;
 	private LocalDate dataNasc;
 	private Endereco endereco;
 	private ArrayList<String> contato;
 	private char sexo;
 	
-	public Pessoa(int id, String nome, String cpf, LocalDate dataNasc, Endereco endereco,
+	public Pessoa(int id, int enderecoid, String nome, String cpf, LocalDate dataNasc, Endereco endereco,
 			char sexo) {
 		this.id = id;
+		this.enderecoid = enderecoid;
 		this.nome = nome;
 		this.cpf = cpf;
 		this.dataNasc = dataNasc;
@@ -24,6 +25,8 @@ public abstract class Pessoa {
 
 	public Pessoa(){
 		this.contato = new ArrayList<>();
+		this. id = -1;
+		this.enderecoid = -1;
 	}
 	
 	
@@ -76,6 +79,14 @@ public abstract class Pessoa {
 
 	public void setSexo(char sexo) {
 		this.sexo = sexo;
+	}
+
+	public int getEnderecoid() {
+		return enderecoid;
+	}
+
+	public void setEnderecoid(int enderecoid) {
+		this.enderecoid = enderecoid;
 	}
 
 	@Override

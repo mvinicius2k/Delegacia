@@ -8,6 +8,7 @@ public class Arma {
     public Arma(String nome, String descricao){
         this.nome = nome;
         this.descricao = descricao;
+        id = -1;
     } 
 
     public Arma (){}

@@ -5,8 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
-
 import br.ufc.quixada.db.Conexao;
 import br.ufc.quixada.model.Arma;
 import br.ufc.quixada.model.Crime;
@@ -20,12 +18,21 @@ public class CrimeDAO {
 	
 	
 	public static boolean cadastrar(Crime c) {
+		int idEnd = EnderecoDAO.buscar(c.getLocal());
+		if(idEnd == -1) {
+			EnderecoDAO.cadastrar(c.getLocal());
+			idEnd = EnderecoDAO.buscar(c.getLocal());
+		}
+		
+		c.setEnderecoid(idEnd);
+		
 		try {
 			
 		
 			int a = 1;
+			
 			String sql = "insert into Crime(descricao, dataOcorrencia, dataComunicacao, flagrante, consumado, enderecoid) values (? ,? ,? ,? ,? ,?)";
-		
+			
 			Conexao con = new Conexao();
 			con.conectar();
 			
@@ -90,7 +97,7 @@ public class CrimeDAO {
 		try{
 			Conexao con = new Conexao();
 			
-			ResultSet result = con.consultar("select * from Crime where id = " + id + " limit 1");
+			ResultSet result = con.consultar("select * from Crime where codCrime = " + id + " limit 1");
 			
 			ArrayList<Crime> resultado = resultSetToCrime(result);
 			con.desconectar();
@@ -137,19 +144,147 @@ public class CrimeDAO {
 		}
 }
 	
-	@Deprecated
+	
+	
 	public static ArrayList<Crime> buscarDataOcorrencia(String date){
-		return null;
+		String sql = "select * from Crime where dataOcorrencia like '%" + date.toLowerCase() + "%'";
+		ArrayList<Crime> lista = new ArrayList<>();
+		Conexao con = new Conexao();
+		
+		con.conectar();
+		
+		try {
+			ResultSet result = con.consultar(sql);
+			
+			lista = resultSetToCrime(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			lista = null;
+		} finally {
+			con.desconectar();
+		}
+		
+		return lista;
+	}
+	
+	public static ArrayList<Crime> buscarLei(int idLei){
+		ArrayList<Integer> idsCrime = new ArrayList<Integer>();
+		ArrayList<Crime> lista = new ArrayList<>();
+		
+		String sql = "select idCrime from CrimeLei where idLei = " + idLei;
+		Conexao con = new Conexao();
+		
+		con.conectar();
+		
+		try {
+			ResultSet result = con.consultar(sql);
+			
+			while(result.next())
+				idsCrime.add(result.getInt("idCrime"));
+			
+			for(int i = 0; i < idsCrime.size(); i++) {
+				result = con.consultar("select * from Crime where codCrime = " + idsCrime.get(i));
+				
+				lista = (resultSetToCrime(result));
+				
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			lista = null;
+		} finally {
+			con.desconectar();
+		}
+		
+		return lista;
 	}
 	
 	@Deprecated
 	public static boolean editar(Crime c) {
-			return true;
+		if(buscar(c.getId()) == null) {
+			System.err.println("Crime nao encontrado");
+			return false;
+		}
+		
+		boolean retorno = true;
+		
+		String sql = "";
+		
+		int idEnd = EnderecoDAO.buscar(c.getLocal());
+		if(idEnd == -1) {
+			EnderecoDAO.cadastrar(c.getLocal());
+			idEnd = EnderecoDAO.buscar(c.getLocal());
+		}
+		
+		
+		sql = "update Crime set idEndereco=?,dataOcorrencia=?, dataComunicacao=?, fragrante=?, consumado=?, descricao=? where codCrime = " + c.getId();
+		Conexao con = new Conexao();
+		
+		con.conectar();
+		
+		try {
+			PreparedStatement ptt = con.preInserir(sql);
+			int a = 1;
+			
+			ptt.setInt(a++, idEnd);
+			ptt.setString(a++, c.getDataOcorrencia());
+			ptt.setTimestamp(a++, Timestamp.valueOf(c.getDataComunicacao()));
+			ptt.setBoolean(a++, c.isFragrante());
+			ptt.setBoolean(a++, c.isConsumado());
+			ptt.setString(a++, c.getDescricao());
+			
+			
+			ptt.executeUpdate();
+			ptt.close();
+			retorno = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			retorno = false;
+		} finally {
+			con.desconectar();
+		}
+		
+		return retorno;
 	}
 	
-	@Deprecated
+	
 	public static boolean remover(ArrayList<Integer> id) {
-		return false;
+		Conexao con = new Conexao();
+		boolean retorno = true;
+		
+		con.conectar();
+		
+		try {
+			for(int i = 0; i < id.size(); i++) {
+				int _id = id.get(i);
+				String sql = "";
+				PreparedStatement ptt;
+				sql = "delete from Crime where codCrime = " + _id;
+				ptt = con.deletar(sql);
+				ptt.executeUpdate();
+				sql = "delete from CrimeLei where idCrime = " + _id;
+				ptt = con.deletar(sql);
+				ptt.executeUpdate();
+				sql = "delete from CrimeArma where idCrime = " + _id;
+				ptt = con.deletar(sql);
+				ptt.executeUpdate();
+				sql = "delete from CrimeCriminoso where idCrime = " + _id;
+				ptt = con.deletar(sql);
+				ptt.executeUpdate();
+				sql = "delete from CrimeVitima where idCrime = " + _id;
+				ptt = con.deletar(sql);
+				ptt.executeUpdate();
+				ptt.close();
+			}
+			
+		} catch (Exception e) {
+			retorno = false;
+			e.printStackTrace();
+		} finally {
+			con.desconectar();
+		}
+	return retorno;
 	}
 	
 	

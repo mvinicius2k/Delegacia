@@ -10,8 +10,8 @@ public class CriminosoDAO {
 	
 	
 	@Deprecated
-	public static Vitima buscar(int id) {
-		return null;
+	public static Criminoso buscar(int id) {
+		
 	}
 	
 	@Deprecated

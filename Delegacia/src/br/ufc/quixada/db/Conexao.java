@@ -81,6 +81,14 @@ public class Conexao {
 		return con.prepareStatement(sql);
 	}
 	
+	public PreparedStatement deletar(String sql) throws SQLException {
+		return con.prepareStatement(sql);
+	}
+	
+	public PreparedStatement criar(String sql) throws SQLException {
+		return con.prepareStatement(sql);
+	}
+	
 	
 		
 	public ResultSet consultar(String sql) throws SQLException {

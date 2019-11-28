@@ -191,3 +191,5 @@ CREATE TABLE IF NOT EXISTS CrimeArma
 --from select * from Endereco join (select idEndereco from Pessoa where id = 1) e on e.idEndereco = codEndereco
 
 --select * from Lei join (select idLei from CrimeLei where idCrime = 1) c on c.idLei = Lei.codLei
+
+select * from Endereco where codEndereco = 1

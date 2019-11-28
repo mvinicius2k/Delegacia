@@ -8,12 +8,15 @@ public class Criminoso extends Pessoa {
 
 	public Criminoso(int id, String nome, String cpf, LocalDate dataNasc, Endereco endereco, char sexo,
 			String escolaridade, int id2) {
-		super(id, nome, cpf, dataNasc, endereco, sexo);
+		super(id, id2, nome, cpf, dataNasc, endereco, sexo);
 		this.escolaridade = escolaridade;
 		this.id = id2;
 	}
 
-	public Criminoso(){}
+	public Criminoso(){
+		this.id = -1;
+		super.setId(-1);
+	}
 
 	public String getEscolaridade() {
 		return escolaridade;

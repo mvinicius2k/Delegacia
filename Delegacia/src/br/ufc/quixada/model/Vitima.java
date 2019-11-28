@@ -9,7 +9,7 @@ public class Vitima extends Pessoa {
 
 	public Vitima(int id, String nome, String cpf, LocalDate dataNasc, Endereco endereco, char sexo,
 			String estadoCorpo, int id2) {
-		super(id, nome, cpf, dataNasc, endereco, sexo);
+		super(id, id2, nome, cpf, dataNasc, endereco, sexo);
 		this.estadoCorpo = estadoCorpo;
 		this.id = id2;
 	}
@@ -18,7 +18,8 @@ public class Vitima extends Pessoa {
 	
 
 	public Vitima() {
-		
+		this.id = -1;
+		super.setId(-1);
 	}
 
 

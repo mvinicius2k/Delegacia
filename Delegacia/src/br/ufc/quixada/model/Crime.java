@@ -38,7 +38,8 @@ public class Crime {
 		this.criminosos = new ArrayList<>();
 		this.armas = new ArrayList<>();
 		this.leis = new ArrayList<>();
-		
+		this.id = -1;
+		this.enderecoid = -1;
 	}
 	
 	public int getId() {
