@@ -27,11 +27,11 @@ public class CrimeDAO {
 		c.setEnderecoid(idEnd);
 		
 		try {
-			
+			//c.getCriminosos().toString();
 		
 			int a = 1;
 			
-			String sql = "insert into Crime(descricao, dataOcorrencia, dataComunicacao, flagrante, consumado, enderecoid) values (? ,? ,? ,? ,? ,?)";
+			String sql = "insert into Crime(descricao, dataOcorrencia, dataComunicacao, fragrante, consumado, idEndereco) values (? ,? ,? ,? ,? ,?)";
 			
 			Conexao con = new Conexao();
 			con.conectar();
@@ -50,7 +50,7 @@ public class CrimeDAO {
 			
 			ptt.executeUpdate();
 			
-			ResultSet result = con.consultar("select MAX(id) from Crime");
+			ResultSet result = con.consultar("select MAX(codCrime) from Crime");
 			int idCrime = -1;
 			while (result.next()) {
 				idCrime = result.getInt(1);
@@ -59,6 +59,7 @@ public class CrimeDAO {
 			
 			
 			for(int i = 0; i < c.getVitimas().size(); i++) {
+				//sd
 				ptt = con.preInserir("insert into CrimeVitima(idVitima, idCrime) values (?, ?)");
 				ptt.setInt(1, c.getVitimas().get(i).getId());
 				ptt.setInt(2, idCrime);
@@ -66,21 +67,16 @@ public class CrimeDAO {
 			}
 			
 			for(int i = 0; i < c.getCriminosos().size(); i++) {
-				ptt = con.preInserir("insert into CrimeVitima(idCriminoso, idCrime) values (?, ?)");
+				ptt = con.preInserir("insert into CrimeCriminoso(idCriminoso, idCrime) values (?, ?)");
 				ptt.setInt(1, c.getCriminosos().get(i).getId());
 				ptt.setInt(2, idCrime);
 				ptt.executeUpdate();
 			}
 			
-			for(int i = 0; i < c.getLeis().size(); i++) {
-				ptt = con.preInserir("insert into CrimeLei(idLei, idCrime) values (?, ?)");
-				ptt.setInt(1, c.getLeis().get(i).getId());
-				ptt.setInt(2, idCrime);
-				ptt.executeUpdate();
-			}
 			
 			for(int i = 0; i < c.getArmas().size(); i++) {
-				ptt = con.preInserir("insert into CrimeArmas(idArma, idCrime) values (?, ?)");
+				c.getArmas().get(i).setId(ArmaDAO.buscar(c.getArmas().get(i)));
+				ptt = con.preInserir("insert into CrimeArma(idArma, idCrime) values (?, ?)");
 				ptt.setInt(1, c.getArmas().get(i).getId());
 				ptt.setInt(2, idCrime);
 				ptt.executeUpdate();
@@ -94,8 +90,9 @@ public class CrimeDAO {
 	}
 	
 	public static Crime buscar(int id) {
+		Conexao con = new Conexao();
 		try{
-			Conexao con = new Conexao();
+			con.conectar();
 			
 			ResultSet result = con.consultar("select * from Crime where codCrime = " + id + " limit 1");
 			
@@ -105,7 +102,7 @@ public class CrimeDAO {
 			
 			
 		} catch (IndexOutOfBoundsException e) {
-			System.out.print("O crime de id " + id + " não existe");
+			System.out.print("O crime de id " + id + " nao existe");
 			return null;
 			
 		} catch (SQLException e) {
@@ -116,22 +113,34 @@ public class CrimeDAO {
 			e.printStackTrace();
 			return null;
 		} finally {
-			
+			con.desconectar();
 		}
 	}
 	
 	public static ArrayList<Crime> buscar(String chave){
+		Conexao con = new Conexao();
 		try {
 			
 			
 			ResultSet result;
-			Conexao con = new Conexao();
+			
 			
 			con.conectar();
 				
-			result = con.consultar("select * from Crime join (select id from crimesBusca where result like '%" + chave.toLowerCase() + "%') b on Crime.id = b.id");
+			//result = con.consultar("select * from Crime join (select id from crimesBusca where result like '%" + chave.toLowerCase() + "%') b on Crime.id = b.id");
+			result = con.consultar("select * from Crime");
+			
+			ArrayList<Crime> busca = resultSetToCrime(result);
+			ArrayList<Crime> resultado = new ArrayList<Crime>();
+			for(int i = 0; i < busca.size(); i++) {
 				
-			ArrayList<Crime> resultado = resultSetToCrime(result);
+				if(busca.get(i).toString().toLowerCase().contains(chave.toLowerCase())) {
+					
+					resultado.add(busca.get(i));
+				}
+			}
+				
+			
 			
 			con.desconectar();
 			
@@ -139,6 +148,7 @@ public class CrimeDAO {
 			
 		} catch (SQLException e) {
 			System.err.println("Erro de SQL");
+			con.desconectar();
 			e.printStackTrace();
 			return null;
 		}
@@ -147,7 +157,8 @@ public class CrimeDAO {
 	
 	
 	public static ArrayList<Crime> buscarDataOcorrencia(String date){
-		String sql = "select * from Crime where dataOcorrencia like '%" + date.toLowerCase() + "%'";
+		String sql = "select * from Crime where dataOcorrencia ilike '%" + date.toLowerCase() + "%'";
+		//System.out.println(sql);
 		ArrayList<Crime> lista = new ArrayList<>();
 		Conexao con = new Conexao();
 		
@@ -155,6 +166,7 @@ public class CrimeDAO {
 		
 		try {
 			ResultSet result = con.consultar(sql);
+			
 			
 			lista = resultSetToCrime(result);
 		} catch (Exception e) {
@@ -200,7 +212,7 @@ public class CrimeDAO {
 		return lista;
 	}
 	
-	@Deprecated
+	
 	public static boolean editar(Crime c) {
 		if(buscar(c.getId()) == null) {
 			System.err.println("Crime nao encontrado");
@@ -220,7 +232,7 @@ public class CrimeDAO {
 		
 		sql = "update Crime set idEndereco=?,dataOcorrencia=?, dataComunicacao=?, fragrante=?, consumado=?, descricao=? where codCrime = " + c.getId();
 		Conexao con = new Conexao();
-		
+		System.out.println("edit " + sql);
 		con.conectar();
 		
 		try {
@@ -234,9 +246,42 @@ public class CrimeDAO {
 			ptt.setBoolean(a++, c.isConsumado());
 			ptt.setString(a++, c.getDescricao());
 			
+			int crimeid = c.getId();
+			apagarCrimesArmas(crimeid);
+			apagarCrimesVitima(crimeid);
+			apagarCrimesCriminoso(crimeid);
 			
 			ptt.executeUpdate();
 			ptt.close();
+			
+			int idCrime = c.getId();
+			for(int i = 0; i < c.getVitimas().size(); i++) {
+				//sd
+				ptt = con.preInserir("insert into CrimeVitima(idVitima, idCrime) values (?, ?)");
+				ptt.setInt(1, c.getVitimas().get(i).getId());
+				ptt.setInt(2, idCrime);
+				ptt.executeUpdate();
+			}
+			
+			for(int i = 0; i < c.getCriminosos().size(); i++) {
+				ptt = con.preInserir("insert into CrimeCriminoso(idCriminoso, idCrime) values (?, ?)");
+				ptt.setInt(1, c.getCriminosos().get(i).getId());
+				ptt.setInt(2, idCrime);
+				ptt.executeUpdate();
+			}
+			
+			
+			for(int i = 0; i < c.getArmas().size(); i++) {
+				c.getArmas().get(i).setId(ArmaDAO.buscar(c.getArmas().get(i)));
+				ptt = con.preInserir("insert into CrimeArma(idArma, idCrime) values (?, ?)");
+				ptt.setInt(1, c.getArmas().get(i).getId());
+				ptt.setInt(2, idCrime);
+				ptt.executeUpdate();
+			}
+			ptt.close();
+			
+			
+			
 			retorno = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -248,6 +293,56 @@ public class CrimeDAO {
 		return retorno;
 	}
 	
+	public static void apagarCrimesArmas(int crimeid) {
+		String sql = "delete from CrimeArma where idCrime = " + crimeid;
+		
+		Conexao con = new Conexao();
+		con.conectar();
+		try {
+			
+			con.deletar(sql).executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}finally {
+			con.desconectar();
+		}
+	}
+	
+	public static void apagarCrimesCriminoso(int crimeid) {
+		String sql = "delete from CrimeCriminoso where idCrime = " + crimeid;
+		
+		Conexao con = new Conexao();
+		con.conectar();
+		try {
+			
+			con.deletar(sql).executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}finally {
+			con.desconectar();
+		}
+	}
+	
+	public static void apagarCrimesVitima(int crimeid) {
+		String sql = "delete from CrimeVitima where idCrime = " + crimeid;
+		
+		Conexao con = new Conexao();
+		con.conectar();
+		try {
+			
+			con.deletar(sql).executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}finally {
+			con.desconectar();
+		}
+	}
 	
 	public static boolean remover(ArrayList<Integer> id) {
 		Conexao con = new Conexao();
@@ -259,23 +354,20 @@ public class CrimeDAO {
 			for(int i = 0; i < id.size(); i++) {
 				int _id = id.get(i);
 				String sql = "";
+				
+				apagarCrimesArmas(_id);
+				apagarCrimesCriminoso(_id);
+				apagarCrimesVitima(_id);
+				
 				PreparedStatement ptt;
-				sql = "delete from Crime where codCrime = " + _id;
-				ptt = con.deletar(sql);
-				ptt.executeUpdate();
 				sql = "delete from CrimeLei where idCrime = " + _id;
 				ptt = con.deletar(sql);
 				ptt.executeUpdate();
-				sql = "delete from CrimeArma where idCrime = " + _id;
+				sql = "delete from Crime where codCrime = " + _id;
 				ptt = con.deletar(sql);
 				ptt.executeUpdate();
-				sql = "delete from CrimeCriminoso where idCrime = " + _id;
-				ptt = con.deletar(sql);
-				ptt.executeUpdate();
-				sql = "delete from CrimeVitima where idCrime = " + _id;
-				ptt = con.deletar(sql);
-				ptt.executeUpdate();
-				ptt.close();
+				
+				
 			}
 			
 		} catch (Exception e) {
@@ -313,7 +405,7 @@ public class CrimeDAO {
 				c.setContato(getContatosDB(result.getInt("codPessoa")));
 				
 				c.setId(result.getInt("codCriminoso"));
-				c.setEscolaridade(result.getString("escolaridade"));
+				c.setEscolaridade((result.getString("escolaridade")));
 				
 				lista.add(c);
 				
@@ -334,6 +426,7 @@ public class CrimeDAO {
 	
 	public static ArrayList<Vitima> getVitimasDB(int idCrime){
 		String sql = "select * from Pessoa join (select * from Vitima join (select idVitima from CrimeVitima where idCrime = " + idCrime + ")  c on c.idVitima = Vitima.codVitima) cc on cc.idPessoa = Pessoa.codPessoa";
+		//System.out.println(sql);
 		ArrayList<Vitima> lista = new ArrayList<>();
 		Conexao con = new Conexao();
 		con.conectar();
@@ -376,6 +469,7 @@ public class CrimeDAO {
 		Conexao con = new Conexao();
 		ArrayList<Arma> lista = new ArrayList<>();
 		String sql = "select * from Arma join (select idArma from CrimeArma where idCrime = " + idCrime + ") d on d.idArma = Arma.codArma";
+		//System.err.println(sql);
 		con.conectar();
 		
 		
@@ -389,7 +483,7 @@ public class CrimeDAO {
 				a.setId(result.getInt("codArma"));
 				a.setNome(result.getString("nome"));
 				a.setDescricao(result.getString("descricao"));
-				
+				lista.add(a);
 			}
 			
 		} catch (Exception e) {
@@ -398,7 +492,7 @@ public class CrimeDAO {
 		} finally {
 			con.desconectar();
 		}
-		
+		//System.out.println("debug " + lista.toString());
 		return lista;
 		
 		
@@ -437,7 +531,7 @@ public class CrimeDAO {
 	public static ArrayList<String> getContatosDB(int idPessoa) {
 		Conexao con = new Conexao();
 		ArrayList<String> contatos = new ArrayList<String>();
-		String sql = "select * from contatos where idPessoa = " + idPessoa;
+		String sql = "select * from contato where idPessoa = " + idPessoa;
 		
 		con.conectar();
 		try {
@@ -465,7 +559,7 @@ public class CrimeDAO {
 		
 		while(result.next()) {
 			Crime c = new Crime();
-			c.setId(result.getInt("id"));
+			c.setId(result.getInt("codCrime"));
 			c.setDataOcorrencia(result.getString("dataOcorrencia"));
 			c.setDataComunicacao(result.getTimestamp("dataComunicacao").toLocalDateTime());
 			c.setFragrante(result.getBoolean("fragrante"));
@@ -480,13 +574,16 @@ public class CrimeDAO {
 		
 		for(int i = 0; i < resultados.size(); i++) {
 			Crime c = resultados.get(i);
-			c.setLocal(EnderecoDAO.getEnderecoDB(c.getId()));
+			c.setLocal(EnderecoDAO.getEnderecoDB(c.getEnderecoid()));
 			c.setVitimas(getVitimasDB(c.getId()));
 			c.setCriminosos(getCriminososDB(c.getId()));
 			c.setArmas(getArmasDB(c.getId()));
 			c.setLeis(getLeisDB(c.getId()));
 			
+			//System.out.println("><" + (c.getLocal().toString()));
 		}
+		
+		
 		
 		return resultados;
 	}

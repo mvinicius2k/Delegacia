@@ -23,13 +23,7 @@ public class Main {
 				menu.buscaGeralBoletim();
 				
 				break;
-			case 3:
-				menu.buscaGeralBoletim();
-				break;
-			case 4:
-				menu.buscaGeralBoletim();
-				break;
-			case 5:
+			case 0:
 				System.exit(0);
 				break;
 

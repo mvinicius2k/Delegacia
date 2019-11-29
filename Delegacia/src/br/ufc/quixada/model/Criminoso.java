@@ -18,6 +18,8 @@ public class Criminoso extends Pessoa {
 		super.setId(-1);
 	}
 
+	
+
 	public String getEscolaridade() {
 		return escolaridade;
 	}
@@ -45,12 +47,12 @@ public class Criminoso extends Pessoa {
 	@Override
     public String toString() {
 		return 	"Vitima.:\n" +
-				"Nome Completo >> " + super.getNome() + "\n" +
+				"Codigo >> " + getId() +
+				"\nNome Completo >> " + super.getNome() + "\n" +
 				"CPF >> " + super.getCpf() + "\n" +
 				"Data Nasc. >> " + super.getDataNasc().toString() + "\n" +
 				"Sexo >> " + super.getSexo()  + "\n" +
-				"End. >> " + super.getEndereco().toString()  + "\n" + 
-				"Contatos >> " + super.getContato().toString()  + "\n" +
+				"End. >> " + super.getEndereco().toString()  + "\n" +
 				"Escolaridade >> " + this.escolaridade + "\n";		
 	}
 

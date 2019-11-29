@@ -24,7 +24,7 @@ public class Conexao {
 
 	public Conexao() {
 		super();
-		this.endereco = "jdbc:postgresql://localhost:5432/Delegacia";
+		this.endereco = "jdbc:postgresql://localhost:5432/Delegacia4";
 		this.usuario = "postgres";
 		this.senha = "admin";
 		

@@ -145,18 +145,24 @@ public class Crime {
 	
 	@Override
     public String toString() {
-		return 	"CRIME:\n" +
-				"COD. >> " + this.id+ "\n" +
-				"Data do Ocorrido >> " + this.dataOcorrencia.toString() + "\n" +
-				"Data do Relato >> " + this.dataComunicacao.toString() + "\n" +
-				"Fragrante? >> " + this.fragrante  + "\n" +
-				"Consumado? >> " + this.consumado  + "\n" +
-				"End. >> " + this.local.toString()  + "\n" + 
-				"Vitima >> " + this.vitimas.toString()  + "\n" +
-				"Suspeito/Investigado >> " + this.criminosos.toString()  + "\n"+ 
-				"Arma >> " + this.armas.toString()  + "\n" +
-				"Lei >> " + this.leis.toString()  + "\n" +
-				"Descricao >> " + this.descricao  + "\n";
+		try {
+
+			return 	"CRIME:\n" +
+					"COD. >> " + this.id+ "\n" +
+					"Data do Ocorrido >> " + this.dataOcorrencia.toString() + "\n" +
+					"Data do Relato >> " + this.dataComunicacao.toString() + "\n" +
+					"Fragrante? >> " + this.fragrante  + "\n" +
+					"Consumado? >> " + this.consumado  + "\n" +
+					"End. >> " + this.local.toString()  + "\n" + 
+					"Vitima >> " + this.vitimas.toString()  + "\n" +
+					"Suspeito/Investigado >> " + this.criminosos.toString()  + "\n"+ 
+					"Arma >> " + this.armas.toString()  + "\n" +
+					"Descricao >> " + this.descricao  + "\n";	
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+		
 
 	}
 	

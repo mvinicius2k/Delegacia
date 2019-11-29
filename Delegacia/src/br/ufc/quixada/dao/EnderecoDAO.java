@@ -51,6 +51,7 @@ public class EnderecoDAO {
 		Conexao con = new Conexao();
 		
 		try {
+			con.conectar();
 			ResultSet result;
 			String sql = "";
 			
@@ -151,6 +152,7 @@ public class EnderecoDAO {
 				ptt.setInt(a++, e.getEstadoid());
 				ptt.setInt(a++, Integer.parseInt(e.getNumero()));
 				ptt.setString(a++, e.getComplemento());
+				ptt.executeUpdate();
 				
 			}
 			
@@ -169,7 +171,8 @@ public class EnderecoDAO {
 	
 	
 	public static Endereco getEnderecoDB(int idEndereco) {
-		String sql = "select * from Endereco join (select idEndereco from Pessoa where codPessoa = " + idEndereco + ") e on e.idEndereco = codEndereco";
+		//String sql = "select * from Endereco join (select idEndereco from Pessoa where codPessoa = " + idEndereco + ") e on e.idEndereco = codEndereco";
+		String sql = "select * from Endereco where codEndereco = " + idEndereco;
 		Endereco endereco = new Endereco();
 		Conexao con = new Conexao();
 		con.conectar();
@@ -196,11 +199,11 @@ public class EnderecoDAO {
 			
 			result = con.consultar("select nomeRua from Rua where codRua = " + endereco.getRuaid());
 			while(result.next()) endereco.setRua(result.getString(1));
-			result = con.consultar("select nomeCidade from Cidade where codRua = " + endereco.getCidadeid());
+			result = con.consultar("select nomeCidade from Cidade where codCidade = " + endereco.getCidadeid());
 			while(result.next()) endereco.setCidade(result.getString(1));
 			result = con.consultar("select nomeBairro from Bairro where codBairro = " + endereco.getBairroid());
-			while(result.next()) endereco.setRua(result.getString(1));
-			result = con.consultar("select nomeUF from UF where codRua = " + endereco.getEstadoid());
+			while(result.next()) endereco.setBairro(result.getString(1));
+			result = con.consultar("select nomeUF from UF where codUF = " + endereco.getEstadoid());
 			while(result.next()) endereco.setEstado(result.getString(1));
 			
 			
@@ -208,6 +211,7 @@ public class EnderecoDAO {
 			
 			
 		} catch (Exception e) {
+			System.err.println("Erro de endereco");
 			e.printStackTrace();
 			e = null;
 		} finally {

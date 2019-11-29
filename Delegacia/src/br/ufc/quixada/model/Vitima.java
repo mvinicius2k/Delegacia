@@ -58,12 +58,12 @@ public class Vitima extends Pessoa {
 	@Override
     public String toString() {
 		return 	"Vitima.:\n" +
+				"Codigo >> " + this.getId() + "\n" +
 				"Nome Completo >> " + super.getNome() + "\n" +
 				"CPF >> " + super.getCpf() + "\n" +
 				"Data Nasc. >> " + super.getDataNasc().toString() + "\n" +
 				"Sexo >> " + super.getSexo()  + "\n" +
 				"End. >> " + super.getEndereco().toString()  + "\n" + 
-				"Contatos >> " + super.getContato().toString()  + "\n" +
 				"Estado do Corpo >> " + this.estadoCorpo + "\n";
 	}
 	
