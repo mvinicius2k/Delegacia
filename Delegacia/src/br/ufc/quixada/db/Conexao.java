@@ -26,7 +26,7 @@ public class Conexao {
 		super();
 		this.endereco = "jdbc:postgresql://localhost:5432/Delegacia4";
 		this.usuario = "postgres";
-		this.senha = "admin";
+		this.senha = "alunoufc";
 		
 		
 	}
@@ -34,8 +34,8 @@ public class Conexao {
 	
 	
 	/*
-	 * Se a conexão tiver sucesso, um booleano true é retornado.
-	 * Se a conexao não tiver sucesso, um boolean false é retornado.
+	 * Se a conexï¿½o tiver sucesso, um booleano true ï¿½ retornado.
+	 * Se a conexao nï¿½o tiver sucesso, um boolean false ï¿½ retornado.
 	 */
 
 	public boolean conectar() {
@@ -47,7 +47,7 @@ public class Conexao {
 			return true;
 			
 		} catch (ClassNotFoundException e) {
-			System.out.println("Classe não encontrada");
+			System.out.println("Classe nï¿½o encontrada");
 			e.printStackTrace();
 			return false;
 			
@@ -62,8 +62,8 @@ public class Conexao {
 	
 	
 	/*
-	 * Se a desconexão tiver sucesso, um booleano true é retornado.
-	 * Se a desconexao não tiver sucesso, um boolean false é retornado.
+	 * Se a desconexï¿½o tiver sucesso, um booleano true ï¿½ retornado.
+	 * Se a desconexao nï¿½o tiver sucesso, um boolean false ï¿½ retornado.
 	 */
 	public boolean desconectar() {
 		try {

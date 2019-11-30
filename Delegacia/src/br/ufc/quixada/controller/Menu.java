@@ -57,13 +57,19 @@ public class Menu {
 		
 		boolLoop = true;
 		
+		System.out.println("Ha vitimas no crime? (1) Sim (2) Nao");
+		boolLoop = booltoint(sc.nextInt()); sc = new Scanner(System.in);
+		
 		while(boolLoop == true) {
 			vitimas.add(receberVitima());
 			System.out.println("Adicionar mais uma Vitima? (1) Sim (2) Nao");
 			boolLoop = booltoint(sc.nextInt()); sc = new Scanner(System.in);
 			
 		}
-		
+		if(vitimas.isEmpty() && criminoso.isEmpty()) {
+			System.out.println("O boletim deve haver pelo menos uma criminoso ou uma vitima");
+			return;
+		}
 		
 		
 		
@@ -152,7 +158,7 @@ public class Menu {
 			
 			hr();
 			for(int i = 0; i < crimes.size(); i++) {
-				System.out.println(crimes.toString());
+				System.out.println("" + crimes.get(i));
 				
 			}
 			

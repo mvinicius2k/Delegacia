@@ -146,13 +146,13 @@ public class Endereco {
 
 	@Override
     public String toString() {
-        return 	"END.:\n" +
-				"Rua >> " + this.rua + "\n" +
-				"Número >> " + this.numero + "\n" +
-				"Bairro >> " + this.bairro + "\n" +
-				"Cidade >> " + this.cidade  + "\n" + 
-				"Estado >> " + this.estado  + "\n" +
-				"Complemento >> " + this.complemento  + "\n";
+        return 	"\n------------------------------\n" +
+				"\tRua >> " + this.rua + "\n" +
+				"\tNumero >> " + this.numero + "\n" +
+				"\tBairro >> " + this.bairro + "\n" +
+				"\tCidade >> " + this.cidade  + "\n" + 
+				"\tEstado >> " + this.estado  + "\n" +
+				"\tComplemento >> " + this.complemento.replace("?", "Nenhum")  + "\n------------------------------";
 	}
 
 	@Override

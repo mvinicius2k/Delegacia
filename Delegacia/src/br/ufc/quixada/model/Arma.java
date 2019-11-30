@@ -42,9 +42,8 @@ public class Arma {
 	@Override
     public String toString() {
 		
-        return "ARMA DO CRIME\n" +
-                "Nome da Arma >> " + this.nome + "\n" 
-                ;
+        return "" +
+                "" + this.nome + "\n";
     }
     
 }

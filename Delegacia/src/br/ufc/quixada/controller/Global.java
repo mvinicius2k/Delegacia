@@ -20,4 +20,9 @@ public class Global {
 		return date.toLocalDateTime();
 		
 	}
+	
+	public static String boolToString(boolean bool) {
+		if(bool == true) return "Sim";
+		else return "Nao";
+	}
 }

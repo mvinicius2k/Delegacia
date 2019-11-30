@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.ufc.quixada.controller.Global;
+
 public class Crime {
 	private int id, enderecoid;
 	private String descricao;
@@ -147,17 +149,17 @@ public class Crime {
     public String toString() {
 		try {
 
-			return 	"CRIME:\n" +
-					"COD. >> " + this.id+ "\n" +
+			return 	"\n\n############ CRIME [" + this.id +  "] ############\n" +
+					"Codigo >> " + this.id+ "\n" +
 					"Data do Ocorrido >> " + this.dataOcorrencia.toString() + "\n" +
-					"Data do Relato >> " + this.dataComunicacao.toString() + "\n" +
-					"Fragrante? >> " + this.fragrante  + "\n" +
-					"Consumado? >> " + this.consumado  + "\n" +
-					"End. >> " + this.local.toString()  + "\n" + 
-					"Vitima >> " + this.vitimas.toString()  + "\n" +
-					"Suspeito/Investigado >> " + this.criminosos.toString()  + "\n"+ 
-					"Arma >> " + this.armas.toString()  + "\n" +
-					"Descricao >> " + this.descricao  + "\n";	
+					"Data do Relato >> " + this.dataComunicacao.toString().replace("T", " ") + "\n" +
+					"Flagrante? >> " + Global.boolToString(this.fragrante)  + "\n" +
+					"Consumado? >> " + Global.boolToString(this.consumado)  + "\n" +
+					"Local" + this.local.toString()  + "\n\n" + 
+					"--VITIMAS--" + this.vitimas.toString().replace("[", "").replace("]", " ")  + "\n\n" +
+					"--SUSPEITOS--" + this.criminosos.toString().replace("[", "").replace("]", " ")  + "\n"+ 
+					"Arma >> " + this.armas.toString().replace("[", "").replace("]", "")  + "" +
+					"Descricao do crime >> " + this.descricao  + "\n";	
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "";

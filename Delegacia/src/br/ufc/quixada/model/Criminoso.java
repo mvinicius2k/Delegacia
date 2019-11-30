@@ -46,13 +46,13 @@ public class Criminoso extends Pessoa {
 
 	@Override
     public String toString() {
-		return 	"Vitima.:\n" +
-				"Codigo >> " + getId() +
+		return 	
+				"\n\nCodigo >> " + getId() +
 				"\nNome Completo >> " + super.getNome() + "\n" +
 				"CPF >> " + super.getCpf() + "\n" +
 				"Data Nasc. >> " + super.getDataNasc().toString() + "\n" +
 				"Sexo >> " + super.getSexo()  + "\n" +
-				"End. >> " + super.getEndereco().toString()  + "\n" +
+				"Endereco" + super.getEndereco().toString()  + "\n" +
 				"Escolaridade >> " + this.escolaridade + "\n";		
 	}
 
